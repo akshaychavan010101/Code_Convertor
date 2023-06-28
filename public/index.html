@@ -202,7 +202,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/mode/clike/clike.min.js"></script>
     <script>
       $(document).ready(() => {
-        const baseURL = "https://code-convertor.vercel.app"
         const errorAlert = $("#errorAlert");
         const codeForm = $("#codeForm");
         const codeEditor = CodeMirror.fromTextArea(
@@ -242,7 +241,7 @@
             // Debug button clicked
             clickedButton[0].innerHTML = "Debugging...";
             $.ajax({
-              url: `${baseURL}/debug`,
+              url: "/debug",
               method: "POST",
               data: JSON.stringify({ code, language: selectedLanguage }),
               contentType: "application/json",
@@ -261,7 +260,7 @@
             // Quality check button clicked
             clickedButton[0].innerHTML = "Checking Quality...";
             $.ajax({
-              url: `${baseURL}/check-quality`,
+              url: "/check-quality",
               method: "POST",
               data: JSON.stringify({ code, language: selectedLanguage }),
               contentType: "application/json",
@@ -285,7 +284,7 @@
 
             clickedButton[0].innerHTML = "Converting...";
             $.ajax({
-              url: `${baseURL}/convert`,
+              url: "/convert",
               method: "POST",
               data: JSON.stringify({ code, language: selectedLanguage }),
               contentType: "application/json",
