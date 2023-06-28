@@ -295,6 +295,7 @@
                 clickedButton[0].innerHTML = "Convert";
               },
               error: (error) => {
+                console.log(error);
                 errorAlert.text(error.responseJSON.error).removeClass("d-none");
                 clickedButton[0].innerHTML = "Convert";
               },
