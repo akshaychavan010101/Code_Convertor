@@ -3,6 +3,7 @@ const Configuration = require("openai").Configuration;
 const OpenAIApi = require("openai").OpenAIApi;
 require("dotenv").config();
 const path = require("path");
+const cors = require("cors");
 
 const app = express();
 const configuration = new Configuration({
@@ -57,6 +58,7 @@ async function checkCodeQuality(code, language) {
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cors());
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "/public/index.html"));
