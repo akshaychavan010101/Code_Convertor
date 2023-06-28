@@ -6,6 +6,9 @@ const path = require("path");
 const cors = require("cors");
 
 const app = express();
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(cors());
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
@@ -56,12 +59,8 @@ async function checkCodeQuality(code, language) {
   return result;
 }
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(cors());
-
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "/public/index.html"));
+  res.send("Welcome to the Code Convertor App");
 });
 
 app.post("/convert", async (req, res) => {
