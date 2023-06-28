@@ -22,8 +22,7 @@ function generatePrompt(code, language, mode) {
     \n\n${code}
     // ...
     ---
-    You need to identify and fix the bug in the code. Can you help me debug it?
-    Debugging Steps:
+    You need to identify and fix the bug in the code. Consider the following parameters:
     1. Read and understand the code to identify any potential issues.
     2. Look for any syntax errors, logical errors, or unexpected behavior.
     3. Use debugging techniques to narrow down the problem area.
@@ -33,11 +32,11 @@ function generatePrompt(code, language, mode) {
     
     ---
     Summary of Resolved Errors:
-    1. Error 1: [Description of the error]
-       - Resolution: [Explanation of how the error was resolved]
+    1. Error 1: 
+       - Resolution: Explanation of how the error was resolved
     
-    2. Error 2: [Description of the error]
-       - Resolution: [Explanation of how the error was resolved]
+    2. Error 2: 
+       - Resolution: Explanation of how the error was resolved
     
     3. ...
     ---
