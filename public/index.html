@@ -252,7 +252,7 @@
                 clickedButton[0].innerHTML = "Debug";
               },
               error: (error) => {
-                errorAlert.text(error).removeClass("d-none");
+                errorAlert.text(error.responseJSON.error).removeClass("d-none");
                 clickedButton[0].innerHTML = "Debug";
               },
             });
@@ -271,7 +271,7 @@
                 clickedButton[0].innerHTML = "Check Quality";
               },
               error: (error) => {
-                errorAlert.text(error).removeClass("d-none");
+                errorAlert.text(error.responseJSON.error).removeClass("d-none");
                 clickedButton[0].innerHTML = "Check Quality";
               },
             });
@@ -295,7 +295,7 @@
                 clickedButton[0].innerHTML = "Convert";
               },
               error: (error) => {
-                errorAlert.text(error).removeClass("d-none");
+                errorAlert.text(error.responseJSON.error).removeClass("d-none");
                 clickedButton[0].innerHTML = "Convert";
               },
             });
