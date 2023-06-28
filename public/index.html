@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Code Converter</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.css"
+    />
+    <!-- import the google poppins fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+
+      body {
+        background: url(https://images.pexels.com/photos/6424589/pexels-photo-6424589.jpeg?auto=compress&cs=tinysrgb&w=600);
+      }
+      .container {
+        text-align: center;
+        display: flex;
+        justify-content: space-around;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      h1 {
+        color: #dbddf0;
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .form-group label {
+        color: #f1f5f8;
+        font-size: 1.5rem;
+        font-weight: bolder;
+      }
+
+      .btn-primary {
+        background-color: #2b2d42;
+        border-color: #2b2d42;
+      }
+
+      .btn-primary:hover {
+        background-color: #1d1f2f;
+        border-color: #1d1f2f;
+      }
+
+      .alert-danger {
+        background-color: #ef233c;
+        color: #fff;
+        border-color: #ef233c;
+      }
+
+      #resultText {
+        font-size: 1rem;
+        white-space: pre-wrap;
+        color: #030520;
+        font-weight: bolder;
+        border: none;
+        text-align: left;
+      }
+
+      #clearButton {
+        margin-top: 0.2rem;
+        background-color: #2b2d42;
+        border-color: #2b2d42;
+      }
+
+      #clearButton:hover {
+        background-color: #1d1f2f;
+        border-color: #1d1f2f;
+      }
+
+      .CodeMirror {
+        width: 100%;
+        height: 300px;
+        border-radius: 5px;
+        text-align: left;
+        background-color: rgb(226, 241, 252);
+      }
+
+      #input_box {
+        width: 80%;
+        height: 300px;
+      }
+
+      #conversionResult {
+        width: 80%;
+        height: 300px;
+        overflow-y: scroll;
+        background-color: white;
+        border-radius: 5px;
+        text-align: left;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border: none;
+        box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px,
+          rgba(0, 0, 0, 0.24) 0px 1px 2px;
+      }
+
+      body::-webkit-scrollbar,
+      #conversionResult::-webkit-scrollbar {
+        display: none;
+      }
+
+      .d-none {
+        display: none;
+      }
+
+      /* create confert button css */
+      #convertButton {
+        margin-left: 0.5rem;
+        background-color: #40425a;
+        border-color: #2b2d42;
+      }
+
+      #convertButton:hover {
+        background-color: #1d1f2f;
+        border-color: #1d1f2f;
+      }
+
+      /* create a debug button css */
+      #debugButton {
+        margin-left: 0.5rem;
+        background-color: #40425a;
+        border-color: #2b2d42;
+      }
+
+      #debugButton:hover {
+        background-color: #1d1f2f;
+        border-color: #1d1f2f;
+      }
+
+      /* create a quality button css */
+      #qualityButton {
+        margin-left: 0.5rem;
+        background-color: #40425a;
+        border-color: #2b2d42;
+      }
+
+      #qualityButton:hover {
+        background-color: #1d1f2f;
+        border-color: #1d1f2f;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 class="text-center">Code Converter</h1>
+    <div class="container">
+      <div id="errorAlert" class="alert alert-danger d-none" role="alert"></div>
+      <div id="input_box">
+        <form id="codeForm" class="mt-4">
+          <div class="form-group">
+            <label for="language">Select the target language:</label>
+            <select id="language" name="language" class="form-control">
+              <option value="">Choose...</option>
+              <option value="Python">Python</option>
+              <option value="JavaScript">JavaScript</option>
+              <option value="Java">Java</option>
+              <option value="Php">Php</option>
+              <option value="C++">C++</option>
+              <option value="C#">C#</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="codeEditor">Enter your code:</label>
+            <textarea id="codeEditor" name="codeEditor"></textarea>
+          </div>
+          <button id="convertButton" type="submit" class="btn btn-primary">
+            Convert
+          </button>
+          <button id="debugButton" type="submit" class="btn btn-primary">
+            Debug
+          </button>
+          <button id="qualityButton" type="submit" class="btn btn-primary">
+            Check Quality
+          </button>
+        </form>
+      </div>
+      <div id="conversionResult" class="mt-4 d-none">
+        <button id="clearButton" class="btn btn-secondary">Clear</button>
+        <pre id="resultText"></pre>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/mode/clike/clike.min.js"></script>
+    <script>
+      $(document).ready(() => {
+        const errorAlert = $("#errorAlert");
+        const codeForm = $("#codeForm");
+        const codeEditor = CodeMirror.fromTextArea(
+          document.getElementById("codeEditor"),
+          {
+            lineNumbers: true,
+            mode: "javascript",
+          }
+        );
+        const languageSelect = $("#language");
+        const convertButton = $("#convertButton");
+        const debugButton = $("#debugButton");
+        const qualityButton = $("#qualityButton");
+        const conversionResult = $("#conversionResult");
+        const resultText = $("#resultText");
+        const clearButton = $("#clearButton");
+
+        codeForm.submit((event) => {
+          event.preventDefault();
+
+          errorAlert.addClass("d-none");
+          conversionResult.addClass("d-none");
+
+          const selectedLanguage = languageSelect.val();
+          const code = codeEditor.getValue();
+          // Handle the respective button click events (convert, debug, quality) and make AJAX requests to the server endpoints
+
+          if (code.trim().length === 0) {
+            errorAlert.text("Please enter your code").removeClass("d-none");
+            return;
+          }
+
+          const clickedButton = $(document.activeElement);
+          const buttonId = clickedButton.attr("id");
+
+          if (buttonId == "debugButton") {
+            // Debug button clicked
+            clickedButton[0].innerHTML = "Debugging...";
+            $.ajax({
+              url: "/debug",
+              method: "POST",
+              data: JSON.stringify({ code, language: selectedLanguage }),
+              contentType: "application/json",
+              success: (response) => {
+                // Handle debug response
+                resultText.text(response.debugResult);
+                conversionResult.removeClass("d-none");
+                clickedButton[0].innerHTML = "Debug";
+              },
+              error: (error) => {
+                errorAlert.text(error.responseJSON.error).removeClass("d-none");
+                clickedButton[0].innerHTML = "Debug";
+              },
+            });
+          } else if (buttonId == "qualityButton") {
+            // Quality check button clicked
+            clickedButton[0].innerHTML = "Checking Quality...";
+            $.ajax({
+              url: "/check-quality",
+              method: "POST",
+              data: JSON.stringify({ code, language: selectedLanguage }),
+              contentType: "application/json",
+              success: (response) => {
+                // Handle quality check response
+                resultText.text(response.qualityResult);
+                conversionResult.removeClass("d-none");
+                clickedButton[0].innerHTML = "Check Quality";
+              },
+              error: (error) => {
+                errorAlert.text(error.responseJSON.error).removeClass("d-none");
+                clickedButton[0].innerHTML = "Check Quality";
+              },
+            });
+          } else {
+            // Convert button clicked
+            if (selectedLanguage.trim().length === 0) {
+              errorAlert.text("Please select a language").removeClass("d-none");
+              return;
+            }
+
+            clickedButton[0].innerHTML = "Converting...";
+            $.ajax({
+              url: "/convert",
+              method: "POST",
+              data: JSON.stringify({ code, language: selectedLanguage }),
+              contentType: "application/json",
+              success: (response) => {
+                // Handle code conversion response
+                resultText.text(response.convertedCode);
+                conversionResult.removeClass("d-none");
+                clickedButton[0].innerHTML = "Convert";
+              },
+              error: (error) => {
+                errorAlert.text(error.responseJSON.error).removeClass("d-none");
+                clickedButton[0].innerHTML = "Convert";
+              },
+            });
+          }
+        });
+
+        clearButton.click(() => {
+          codeEditor.setValue("");
+          codeEditor.clearHistory();
+          languageSelect.val("");
+          conversionResult.addClass("d-none");
+          errorAlert.addClass("d-none");
+        });
+      });
+    </script>
+  </body>
+</html>
