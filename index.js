@@ -65,7 +65,8 @@ async function convertCode(code, language) {
     model: "text-davinci-003",
     prompt: generatePrompt(code, language, "convert"),
     temperature: 0.9,
-    max_tokens: 200,
+    max_tokens: 500,
+     n: 1
   });
   const result = completion.data.choices[0].text;
   return result;
@@ -76,7 +77,8 @@ async function debugCode(code, language) {
     model: "text-davinci-003",
     prompt: generatePrompt(code, language, "debug"),
     temperature: 0.9,
-    max_tokens: 200,
+    max_tokens: 500,
+     n: 1
   });
   const result = completion.data.choices[0].text;
   return result;
@@ -87,7 +89,8 @@ async function checkCodeQuality(code, language) {
     model: "text-davinci-003",
     prompt: generatePrompt(code, language, "checkQuality"),
     temperature: 0.9,
-    max_tokens: 200,
+    max_tokens: 500,
+    n: 1
   });
   const result = completion.data.choices[0].text;
   return result;
